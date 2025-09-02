@@ -135,7 +135,7 @@
                         </div>
                         <div class="pc_customerServer_container_footer_copyright" @click="tolink"
                              v-if="upperData.noCanClose != '1' && upperData.windowStyle != `center`">
-                            <span>CRMChat开源客服系统</span>
+                            <span>子源客服系统</span>
                         </div>
                         <!-- 相关操作结束 -->
 
@@ -148,7 +148,7 @@
                     <div class="advertisement">
                         <div v-html="advertisement"></div>
                         <div class="copyright" @click="tolink">
-                            <span>CRMChat开源客服系统</span>
+                            <span>子源客服系统</span>
                         </div>
                     </div>
                 </div>

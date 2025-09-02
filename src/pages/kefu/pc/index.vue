@@ -111,7 +111,7 @@
         <div class="right_menu">
           <rightMenu :isTourist="tourist" :uid="userActive.to_user_id" :webType="userActive.type" @bindPush="bindPush"></rightMenu>
           <div class="crmchat_link" @click="tolink">
-            <span>CRMChat开源客服系统</span>
+            <span>子源客服系统</span>
           </div>
         </div>
       </div>
@@ -677,7 +677,7 @@ export default {
     },
 
     tolink() {
-      window.open('http://github.crmeb.net/u/CRMChat');
+      window.open('https://chat.13aq.com');
     }
 
 

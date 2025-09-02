@@ -84,7 +84,7 @@
     <div class="footer_customerServer_container">
       <div class="mobel_customerServer_container_footer">
         <div class="crmchat_link" @click="tolink">
-          <span>CRMChat开源客服系统</span>
+          <span>子源客服系统</span>
         </div>
         <div class="mobel_customerServer_container_footer_uploag_image">
           <span class="iconfont">&#xe6ca;</span>

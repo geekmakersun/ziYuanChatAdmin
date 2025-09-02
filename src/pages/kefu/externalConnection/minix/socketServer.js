@@ -599,7 +599,7 @@ export default {
       }
     },
     tolink() {
-      window.open('http://github.crmeb.net/u/CRMChat');
+      window.open('https://chat.13aq.com');
     }
   }
 }
