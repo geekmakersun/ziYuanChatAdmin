@@ -1,69 +1,131 @@
+<!-- @format -->
+
 <template>
   <div class="kefu-layouts">
     <div class="content-wrapper">
-      <baseHeader :kefuInfo="kefuInfo" :online="online" @setOnline="setOnline"></baseHeader>
+      <baseHeader
+        :kefuInfo="kefuInfo"
+        :online="online"
+        @setOnline="setOnline"
+      ></baseHeader>
       <div class="container">
-        <chatList ref="chatList" @setDataId="setDataId" @search="bindSearch" @changeType="changeType" :isShow="isShow" :userOnline="userOnline" :newRecored="newRecored" :searchData="searchData"></chatList>
+        <chatList
+          ref="chatList"
+          @setDataId="setDataId"
+          @search="bindSearch"
+          @changeType="changeType"
+          :isShow="isShow"
+          :userOnline="userOnline"
+          :newRecored="newRecored"
+          :searchData="searchData"
+        ></chatList>
         <div class="chat-content">
           <div class="chat-body">
-
-            <happy-scroll size="5" resize hide-horizontal :scroll-top="scrollTop" @vertical-start="scrollHandler">
-              <div style="width: 600px; padding:20px;" id="chat_scroll" ref="scrollBox">
+            <happy-scroll
+              size="5"
+              resize
+              hide-horizontal
+              :scroll-top="scrollTop"
+              @vertical-start="scrollHandler"
+            >
+              <div
+                style="width: 600px; padding: 20px"
+                id="chat_scroll"
+                ref="scrollBox"
+              >
                 <Spin v-show="isLoad">
-                  <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
+                  <Icon
+                    type="ios-loading"
+                    size="18"
+                    class="demo-spin-icon-load"
+                  ></Icon>
                   <div>Loading</div>
                 </Spin>
-                <div class="chat-item" v-for="(item,index) in records" :key="index" :class="[{'right-box':kefuInfo.user_ids.indexOf(item.user_id) !== -1},{'gary':item.msn_type==5}]" :id="`chat_${item.id}`">
-                  <div class="time" v-show="item.show">{{item.time }}</div>
+                <div
+                  class="chat-item"
+                  v-for="(item, index) in records"
+                  :key="index"
+                  :class="[{ 'right-box': kefuInfo.user_ids.indexOf(item.user_id) !== -1 }, { gary: item.msn_type == 5 }]"
+                  :id="`chat_${item.id}`"
+                >
+                  <div
+                    class="time"
+                    v-show="item.show"
+                  >
+                    {{ item.time }}
+                  </div>
                   <div class="flex-box">
                     <div class="avatar">
-                      <img v-lazy="item.avatar" alt="">
+                      <img
+                        v-lazy="item.avatar"
+                        alt=""
+                      />
                     </div>
                     <div class="msg-wrapper">
                       <!-- 文档 -->
-                      <template v-if="item.msn_type<=2">
-                        <div class="txt-wrapper pad16" v-html="item.msn"></div>
+                      <template v-if="item.msn_type <= 2">
+                        <div
+                          class="txt-wrapper pad16"
+                          v-html="item.msn"
+                        ></div>
                       </template>
                       <!-- 图片 -->
-                      <template v-if="item.msn_type==3">
-                        <div class="img-wraper" v-viewer>
-                          <img v-lazy="item.msn" alt="">
+                      <template v-if="item.msn_type == 3">
+                        <div
+                          class="img-wraper"
+                          v-viewer
+                        >
+                          <img
+                            v-lazy="item.msn"
+                            alt=""
+                          />
                         </div>
                       </template>
                       <!-- 商品 -->
 
-                      <template v-if="item.msn_type==5">
+                      <template v-if="item.msn_type == 5">
                         <div class="order-wrapper pad16">
-                          <div class="img-box"><img :src="item.other.image" alt=""></div>
+                          <div class="img-box">
+                            <img
+                              :src="item.other.image"
+                              alt=""
+                            />
+                          </div>
                           <div class="order-info">
-                            <div class="name line1">{{item.other.store_name}}</div>
-                            <div class="sku">库存：{{item.other.stock}} 销量：{{parseInt(item.other.sales) + parseInt(item.other.ficti?item.other.ficti:0)}}</div>
+                            <div class="name line1">{{ item.other.store_name }}</div>
+                            <div class="sku">库存：{{ item.other.stock }} 销量：{{ parseInt(item.other.sales) + parseInt(item.other.ficti ? item.other.ficti : 0) }}</div>
                             <div class="price-box">
-                              <div class="num">¥ {{item.other.price}}</div>
+                              <div class="num">¥ {{ item.other.price }}</div>
                               <!-- <a herf="javascript:;" class="more" @click.stop="lookGoods(item)">查看商品 ></a> -->
                             </div>
                           </div>
-
                         </div>
                       </template>
                       <!-- 订单 -->
-                      <template v-if="item.msn_type==6 && (item.orderInfo.length>0||item.orderInfo.id)">
+                      <template v-if="item.msn_type == 6 && (item.orderInfo.length > 0 || item.orderInfo.id)">
                         <div class="order-wrapper pad16">
-                          <div class="img-box"><img :src="item.orderInfo.cartInfo[0].productInfo.image" alt=""></div>
+                          <div class="img-box">
+                            <img
+                              :src="item.orderInfo.cartInfo[0].productInfo.image"
+                              alt=""
+                            />
+                          </div>
                           <div class="order-info">
-                            <div class="name line1">{{item.orderInfo.order_id}}</div>
-                            <div class="sku">商品数量：{{item.orderInfo.total_num}}</div>
+                            <div class="name line1">{{ item.orderInfo.order_id }}</div>
+                            <div class="sku">商品数量：{{ item.orderInfo.total_num }}</div>
                             <div class="price-box">
-                              <div class="num">¥ {{item.orderInfo.pay_price}}</div>
-                              <a href="javascript:;" class="more" @click.stop="lookOrder(item)">查看订单 ></a>
+                              <div class="num">¥ {{ item.orderInfo.pay_price }}</div>
+                              <a
+                                href="javascript:;"
+                                class="more"
+                                @click.stop="lookOrder(item)"
+                                >查看订单 ></a
+                              >
                             </div>
                           </div>
-
                         </div>
                       </template>
-
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -73,88 +135,185 @@
           <div class="chat-textarea">
             <div class="chat-btn-wrapper">
               <div class="left-wrapper">
-                <div class="icon-item" @click.stop="isEmoji = !isEmoji"><span class="iconfont iconbiaoqing1"></span></div>
+                <div
+                  class="icon-item"
+                  @click.stop="isEmoji = !isEmoji"
+                >
+                  <span class="iconfont iconbiaoqing1"></span>
+                </div>
                 <div class="icon-item">
-                  <Upload :show-upload-list="false" :headers="header" :data="uploadData" :on-success="handleSuccess" :format="['jpg','jpeg','png','gif']" :on-format-error="handleFormatError" :action="upload">
+                  <Upload
+                    :show-upload-list="false"
+                    :headers="header"
+                    :data="uploadData"
+                    :on-success="handleSuccess"
+                    :format="['jpg', 'jpeg', 'png', 'gif']"
+                    :on-format-error="handleFormatError"
+                    :action="upload"
+                  >
                     <span class="iconfont icontupian1"></span>
                   </Upload>
                 </div>
-                <div class="icon-item" @click.stop.stop="isMsg = true"><span class="iconfont iconliaotian"></span></div>
-                <div class="icon-item" @click.stop.stop="authMsg = true"><Icon style="font-weight: bold" size="22" color="#515a6e" type="ios-chatboxes-outline" /></div>
+                <div
+                  class="icon-item"
+                  @click.stop.stop="isMsg = true"
+                >
+                  <span class="iconfont iconliaotian"></span>
+                </div>
+                <div
+                  class="icon-item"
+                  @click.stop.stop="authMsg = true"
+                >
+                  <Icon
+                    style="font-weight: bold"
+                    size="22"
+                    color="#515a6e"
+                    type="ios-chatboxes-outline"
+                  />
+                </div>
               </div>
               <div class="right-wrapper">
-                <div class="icon-item" @click.stop="isTransfer = !isTransfer">
+                <div
+                  class="icon-item"
+                  @click.stop="isTransfer = !isTransfer"
+                >
                   <span class="iconfont iconzhuanjie"></span>
                   <span>转接</span>
                 </div>
-                <div class="transfer-box" v-if="isTransfer">
-                  <transfer ref="transfer" @transferSuccess="transferSuccess" @close="msgClose" @transferPeople="transferPeople" :userUid="userActive.to_user_id"></transfer>
+                <div
+                  class="transfer-box"
+                  v-if="isTransfer"
+                >
+                  <transfer
+                    ref="transfer"
+                    @transferSuccess="transferSuccess"
+                    @close="msgClose"
+                    @transferPeople="transferPeople"
+                    :userUid="userActive.to_user_id"
+                  ></transfer>
                 </div>
-                <div class="transfer-bg" v-if="isTransfer" @click.stop="isTransfer = false"></div>
+                <div
+                  class="transfer-bg"
+                  v-if="isTransfer"
+                  @click.stop="isTransfer = false"
+                ></div>
               </div>
               <!-- 表情 -->
-              <div class="emoji-box" v-show="isEmoji">
-                <div class="emoji-item" v-for="(emoji, index) in emojiList" :key="index">
-                  <i class="em" :class="emoji" @click.stop="select(emoji)"></i>
+              <div
+                class="emoji-box"
+                v-show="isEmoji"
+              >
+                <div
+                  class="emoji-item"
+                  v-for="(emoji, index) in emojiList"
+                  :key="index"
+                >
+                  <i
+                    class="em"
+                    :class="emoji"
+                    @click.stop="select(emoji)"
+                  ></i>
                 </div>
               </div>
             </div>
-            <div class="textarea-box" style="position:relative;">
+            <div
+              class="textarea-box"
+              style="position: relative"
+            >
               <!-- <Input v-model="chatCon" type="textarea" :rows="4" @keydown.enter="sendText" placeholder="请输入文字内容" @on-enter="sendText" style="font-size:14px" /> -->
-              <div ref="editable" class="editable" contenteditable="true" @keydown.enter="sendText" @paste="handlePaste" @input="handleInput"></div>
+              <div
+                ref="editable"
+                class="editable"
+                contenteditable="true"
+                @keydown.enter="sendText"
+                @paste="handlePaste"
+                @input="handleInput"
+              ></div>
               <div class="send-btn">
-                <Button class="btns" type="primary" :disabled="disabled" @click.stop="sendText">发送</Button>
+                <Button
+                  class="btns"
+                  type="primary"
+                  :disabled="disabled"
+                  @click.stop="sendText"
+                  >发送</Button
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="right_menu">
-          <rightMenu :isTourist="tourist" :uid="userActive.to_user_id" :webType="userActive.type" @bindPush="bindPush"></rightMenu>
-          <div class="crmchat_link" @click="tolink">
+          <rightMenu
+            :isTourist="tourist"
+            :uid="userActive.to_user_id"
+            :webType="userActive.type"
+            @bindPush="bindPush"
+          ></rightMenu>
+          <div
+            class="crmchat_link"
+            @click="tolink"
+          >
             <span>子源客服系统</span>
           </div>
         </div>
       </div>
       <!-- 用户标签 -->
-      <Modal v-model="isMsg" :mask="true" class="none-radius isMsgbox" width="600" :footer-hide="true">
-        <msg-window v-if="isMsg" @close="msgWinClose" @activeTxt="activeTxt"></msg-window>
+      <Modal
+        v-model="isMsg"
+        :mask="true"
+        class="none-radius isMsgbox"
+        width="600"
+        :footer-hide="true"
+      >
+        <msg-window
+          v-if="isMsg"
+          @close="msgWinClose"
+          @activeTxt="activeTxt"
+        ></msg-window>
       </Modal>
       <!-- 自动回复 -->
-      <Modal v-model="authMsg" :mask="true" class="none-radius isMsgbox" width="600" :footer-hide="true">
-        <auth-reply v-if="authMsg" @close="msgAuthClose" @activeTxt="activeTxt"></auth-reply>
+      <Modal
+        v-model="authMsg"
+        :mask="true"
+        class="none-radius isMsgbox"
+        width="600"
+        :footer-hide="true"
+      >
+        <auth-reply
+          v-if="authMsg"
+          @close="msgAuthClose"
+          @activeTxt="activeTxt"
+        ></auth-reply>
       </Modal>
     </div>
   </div>
-
 </template>
 
 <script>
-
-var mp3 = require('../../../assets/video/notice.wav');
+var mp3 = require("../../../assets/video/notice.wav");
 var mp3 = new Audio(mp3);
 mp3.muted = false;
-import Setting from '@/setting';
-import { HappyScroll } from 'vue-happy-scroll'
-import baseHeader from './components/baseHeader';
-import chatList from './components/chatList'
+import Setting from "@/setting";
+import { HappyScroll } from "vue-happy-scroll";
+import baseHeader from "./components/baseHeader";
+import chatList from "./components/chatList";
 import rightMenu from "./components/rightMenu";
 import emojiList from "@/utils/emoji";
-import { Socket } from '@/libs/socket';
+import { Socket } from "@/libs/socket";
 import msgWindow from "./components/msgWindow";
 import authReply from "./components/authReply";
-import transfer from './components/transfer'
-import { serviceList, sendMessage } from '@/api/kefu'
-import { mapState } from 'vuex'
-import { getCookies, getGuid } from '@/libs/util'
-import { serviceInfo } from '@/api/kefu_mobile'
-import request from '@/libs/request'
+import transfer from "./components/transfer";
+import { serviceList, sendMessage } from "@/api/kefu";
+import { mapState } from "vuex";
+import { getCookies, getGuid } from "@/libs/util";
+import { serviceInfo } from "@/api/kefu_mobile";
+import request from "@/libs/request";
 
 // 将所得数组，按照 num 数量进行分组
-const chunk = function(arr, num) {
+const chunk = function (arr, num) {
   num = num * 1 || 1;
   var ret = [];
-  arr.forEach(function(item, i) {
-    if(i % num === 0) {
+  arr.forEach(function (item, i) {
+    if (i % num === 0) {
       ret.push([]);
     }
     ret[ret.length - 1].push(item);
@@ -163,9 +322,8 @@ const chunk = function(arr, num) {
   return ret;
 };
 
-
 export default {
-  name: 'index',
+  name: "index",
   components: {
     baseHeader,
     chatList,
@@ -173,32 +331,30 @@ export default {
     msgWindow,
     transfer,
     HappyScroll,
-    authReply
+    authReply,
     // goodsDetail,
     // orderDetail
   },
-  directives: {
-
-  },
+  directives: {},
   data() {
     return {
-      wsOpen:false,
-      authMsg:false,
+      wsOpen: false,
+      authMsg: false,
       isEmoji: false, // 是否显示表情弹框
-      chatCon: '', // 输入框输入的聊天内容
+      chatCon: "", // 输入框输入的聊天内容
       emojiGroup: chunk(emojiList, 20), // 表情列表 已20个一组进行分组
       emojiList: emojiList, // 表情总数据
-      html: '',
+      html: "",
       userActive: {}, //左侧用户列表选中信息
       kefuInfo: {}, //客服信息
       isMsg: false,
       isTransfer: false,
-      activeMsg: '', // 选中的话术
+      activeMsg: "", // 选中的话术
       chatList: [],
-      text: '',
+      text: "",
       limit: 20,
       upperId: 0,
-      online: true,//当前客服在线状态
+      online: true, //当前客服在线状态
       scrollTop: 0,
       isScroll: true,
       oldHeight: 0,
@@ -206,43 +362,39 @@ export default {
       isProductBox: false,
       goodsId: "",
       isOrder: false,
-      orderId: '',
-      upload: '',
+      orderId: "",
+      upload: "",
       header: {},
       uploadData: {
-        filename: 'file'
+        filename: "file",
       },
       userOnline: {},
       newRecored: {}, //新对话信息
-      searchData: '', // 搜索文字
+      searchData: "", // 搜索文字
       scrollNum: 0, //滚动次数
-      transferId: '', //转接id
+      transferId: "", //转接id
       bodyClose: false,
       tourist: 0,
-      isShow:false,
-      toChat:false,
-    }
+      isShow: false,
+      toChat: false,
+    };
   },
   computed: {
     ...mapState({
-      socketStatus: state => state.admin.kefu.socketStatus
+      socketStatus: (state) => state.admin.kefu.socketStatus,
     }),
     disabled() {
-      if(this.chatCon.length == 0) {
-        return true
+      if (this.chatCon.length == 0) {
+        return true;
       } else {
-        return false
+        return false;
       }
     },
     records() {
       return this.chatList.map((item, index) => {
-        item.time = this.$moment(item.add_time * 1000).format('MMMDo H:mm')
-        if(index) {
-          if(
-            item.add_time -
-            this.chatList[index - 1].add_time >=
-            300
-          ) {
+        item.time = this.$moment(item.add_time * 1000).format("MMMDo H:mm");
+        if (index) {
+          if (item.add_time - this.chatList[index - 1].add_time >= 300) {
             item.show = true;
           } else {
             item.show = false;
@@ -267,101 +419,99 @@ export default {
     //     deep:true
     // }
   },
-   created() {
-    this.upload = Setting.apiBaseURL.replace('admin', 'kefu') + '/upload'
+  created() {
+    this.upload = Setting.apiBaseURL.replace("admin", "kefu") + "/upload";
     console.log(Setting.apiBaseURL, this.upload);
-    serviceInfo().then(res => {
+    serviceInfo().then((res) => {
       this.kefuInfo = res.data;
       // this.online = !!this.kefuInfo.online
-      if(this.kefuInfo.site_name) {
+      if (this.kefuInfo.site_name) {
         document.title = this.kefuInfo.site_name;
       } else {
-        this.kefuInfo.site_name = '';
+        this.kefuInfo.site_name = "";
       }
-    })
+    });
   },
   mounted() {
-    let self = this
-    window.addEventListener('click', function() {
-      self.isEmoji = false
+    let self = this;
+    window.addEventListener("click", function () {
+      self.isEmoji = false;
     });
-    this.bus.pageWs = Socket(true, getCookies('kefu_token'));
+    this.bus.pageWs = Socket(true, getCookies("kefu_token"));
     this.wsAgain();
-    this.header['Authori-zation'] = 'Bearer ' + getCookies('kefu_token');
-    this.text = this.replace_em('[em-smiling_imp]');
+    this.header["Authori-zation"] = "Bearer " + getCookies("kefu_token");
+    this.text = this.replace_em("[em-smiling_imp]");
 
     console.log(this.$route);
 
     window.onbeforeunload = (e) => {
-      if(this.$route.name == "kefu_pc_list") {
+      if (this.$route.name == "kefu_pc_list") {
         e = e || window.event;
         // 兼容IE8和Firefox 4之前的版本
-        if(e) {
-          e.returnValue = '您确定要离开吗？';
+        if (e) {
+          e.returnValue = "您确定要离开吗？";
         }
         // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-        return '您确定要离开吗?';
+        return "您确定要离开吗?";
       } else {
-        window.onbeforeunload = null
+        window.onbeforeunload = null;
       }
     };
-
-
   },
   methods: {
-      handleInput() {
-          let chatCon = this.$refs.editable.innerText.replace(/[\r\n]/g, '');
-          console.log(chatCon)
-          this.chatCon = chatCon.trim();
-      },
-      handlePaste(event) {
-        let clipboardDataItem = event.clipboardData.items[0];
-        if (clipboardDataItem.type.indexOf('image/') != -1) {
-            let file = clipboardDataItem.getAsFile();
-            let formData = new FormData();
-            formData.append('filename', 'file');
-            formData.append('file', file);
-            console.log(this.upload);
-            request({
-                url: this.upload,
-                method: 'post',
-                data: formData,
-                kefu: true
-            }).then(res => {
-                this.sendMsg(res.data.url, 3);
-                this.$refs.editable.innerText = '';
-            }).catch(err => {
-                this.$Message.error(err.msg);
-            });
-        }
-      },
+    handleInput() {
+      let chatCon = this.$refs.editable.innerText.replace(/[\r\n]/g, "");
+      console.log(chatCon);
+      this.chatCon = chatCon.trim();
+    },
+    handlePaste(event) {
+      let clipboardDataItem = event.clipboardData.items[0];
+      if (clipboardDataItem.type.indexOf("image/") != -1) {
+        let file = clipboardDataItem.getAsFile();
+        let formData = new FormData();
+        formData.append("filename", "file");
+        formData.append("file", file);
+        console.log(this.upload);
+        request({
+          url: this.upload,
+          method: "post",
+          data: formData,
+          kefu: true,
+        })
+          .then((res) => {
+            this.sendMsg(res.data.url, 3);
+            this.$refs.editable.innerText = "";
+          })
+          .catch((err) => {
+            this.$Message.error(err.msg);
+          });
+      }
+    },
     // 建立scoket 连接
     wsAgain() {
       this.bus.pageWs.then((ws) => {
-        ws.$on('close',()=>{
+        ws.$on("close", () => {
           this.toChat = false;
-        })
-        ws.$on('success',(data)=>{
-
+        });
+        ws.$on("success", (data) => {
           this.isShow = true;
           let toChat = this.userActive ? this.userActive.to_user_id : this.userActive;
-          if(!this.toChat && toChat){
+          if (!this.toChat && toChat) {
             ws.send({
               data: {
                 id: toChat,
-                test:1
+                test: 1,
               },
               type: "to_chat",
             });
             this.toChat = true;
-            this.online = !!data.online
+            this.online = !!data.online;
           }
         });
 
-
-        ws.$on('chat_auth',(data)=>{
-          if(data.length){
-            data.map(item=>{
+        ws.$on("chat_auth", (data) => {
+          if (data.length) {
+            data.map((item) => {
               item.msn = this.replace_em(item.msn);
               this.pushMessageToList(item);
             });
@@ -369,26 +519,24 @@ export default {
         });
 
         ws.$on(["reply", "chat"], (data) => {
-          if(data.msn_type == 1) {
+          if (data.msn_type == 1) {
             data.msn = this.replace_em(data.msn);
           }
-          if(data.msn_type == 2) {
-            if(data.msn.indexOf("[") == -1) {
+          if (data.msn_type == 2) {
+            if (data.msn.indexOf("[") == -1) {
               data.msn = this.replace_em(`[${data.msn}]`);
             }
           }
           this.chatList.push(data);
-          this.$refs.chatList.updateUserList(data.recored,false);
-          this.$nextTick(()=>{
-            this.scrollTop = document.querySelector(
-              "#chat_scroll"
-            ).offsetHeight;
+          this.$refs.chatList.updateUserList(data.recored, false);
+          this.$nextTick(() => {
+            this.scrollTop = document.querySelector("#chat_scroll").offsetHeight;
           });
         });
 
-        ws.$on('recored',(data)=>{
-          console.log(data)
-          this.$refs.chatList.updateUserList(data,true);
+        ws.$on("recored", (data) => {
+          console.log(data);
+          this.$refs.chatList.updateUserList(data, true);
         });
         ws.$on("reply", (data) => {
           mp3.play();
@@ -406,26 +554,24 @@ export default {
         });
         // 用户未读消息条数更改
         ws.$on("mssage_num", (data) => {
-          if(data.num > 0) {
+          if (data.num > 0) {
             mp3.play();
           }
           this.chatList.forEach((item) => {
-            if(item.to_uid == data.user_id) {
+            if (item.to_uid == data.user_id) {
               item.mssage_num = data.num;
             }
           });
-          if(data.recored.id) {
+          if (data.recored.id) {
             mp3.play();
             this.newRecored = data.recored;
           }
-
         });
-
-      })
+      });
     },
     wsRestart() {
       this.bus.pageWs = Socket(true);
-      this.wsOpen = true
+      this.wsOpen = true;
       this.wsAgain();
     },
 
@@ -435,31 +581,30 @@ export default {
 
     // 上传成功
     handleSuccess(res, file, fileList) {
-      if(res.status === 200) {
+      if (res.status === 200) {
         this.$Message.success(res.msg);
-        this.sendMsg(res.data.url, 3)
+        this.sendMsg(res.data.url, 3);
       } else {
         this.$Message.error(res.msg);
       }
     },
     setOnline(data) {
-
-      this.bus.pageWs.then(ws => {
+      this.bus.pageWs.then((ws) => {
         ws.send({
           data: {
-            online: data
+            online: data,
           },
-          type: "online"
-        })
-      })
+          type: "online",
+        });
+      });
       this.online = data;
     },
     // 输入框选择表情
     select(data) {
-      let val = `[${data}]`
-      this.$refs.editable.innerText += val
-      this.chatCon +=val;
-      this.isEmoji = false
+      let val = `[${data}]`;
+      this.$refs.editable.innerText += val;
+      this.chatCon += val;
+      this.isEmoji = false;
     },
     // 聊天表情转换
     replace_em(str) {
@@ -473,13 +618,13 @@ export default {
     },
     // 获取列表用户信息
     setDataId(data) {
-      this.userActive = data
-      this.chatList = []
-      this.upperId = 0
-      this.oldHeight = 0
-      this.isScroll = true
-      if(data) {
-        window.document.title = data.nickname ? `正在和${data.nickname}对话中 - ${this.kefuInfo.site_name}` : '正在和游客对话中 - ' + this.kefuInfo.site_name
+      this.userActive = data;
+      this.chatList = [];
+      this.upperId = 0;
+      this.oldHeight = 0;
+      this.isScroll = true;
+      if (data) {
+        window.document.title = data.nickname ? `正在和${data.nickname}对话中 - ${this.kefuInfo.site_name}` : "正在和游客对话中 - " + this.kefuInfo.site_name;
 
         this.bus.pageWs.then((ws) => {
           ws.send({
@@ -488,11 +633,11 @@ export default {
             },
             type: "to_chat",
           });
-          this.toChat = true
+          this.toChat = true;
         });
-        this.getChatList()
+        this.getChatList();
       } else {
-        window.document.title = this.kefuInfo.site_name
+        window.document.title = this.kefuInfo.site_name;
         this.bus.pageWs.then((ws) => {
           ws.send({
             data: {
@@ -502,47 +647,45 @@ export default {
           });
         });
       }
-
-
     },
     msgClose(e) {
-      this.isTransfer = false
+      this.isTransfer = false;
     },
-    transferSuccess(e){
-      this.$refs.chatList.deleteUserList(this.userActive)
+    transferSuccess(e) {
+      this.$refs.chatList.deleteUserList(this.userActive);
     },
     msgWinClose() {
-      this.isMsg = false
+      this.isMsg = false;
     },
     msgAuthClose() {
-      this.authMsg = false
+      this.authMsg = false;
     },
     // 话术选中
     activeTxt(data) {
-      this.$refs.editable.innerText += `${data}`
-      this.chatCon +=data;
-      this.isMsg = false
+      this.$refs.editable.innerText += `${data}`;
+      this.chatCon += data;
+      this.isMsg = false;
     },
     // 文本发送
     sendText() {
-    let chatCon = this.$refs.editable.innerText.replace(/[\r\n]/g, '');
-    if (!chatCon) {
-        return this.$Message.error('请输入内容');
-    }
-    this.sendMsg(chatCon, 1);
-    this.$refs.editable.innerText = '';
-      this.chatCon = '';
+      let chatCon = this.$refs.editable.innerText.replace(/[\r\n]/g, "");
+      if (!chatCon) {
+        return this.$Message.error("请输入内容");
+      }
+      this.sendMsg(chatCon, 1);
+      this.$refs.editable.innerText = "";
+      this.chatCon = "";
     },
 
     // 统一发送处理
     sendMsg(msn, type) {
       let guid = getGuid();
       let chat = this.chatOptinos(guid, msn, type);
-      sendMessage(chat).then(res => {
-          chat.add_time = Date.parse(new Date()) / 1000;
+      sendMessage(chat).then((res) => {
+        chat.add_time = Date.parse(new Date()) / 1000;
         chat.msn = this.replace_em(chat.msn);
-          this.pushMessageToList(chat);
-      })
+        this.pushMessageToList(chat);
+      });
     },
     pushMessageToList(data) {
       this.chatList.push(data);
@@ -560,129 +703,120 @@ export default {
         appid: this.kefuInfo.appid,
         other: other || {},
         type: 0,
-          guid: guid
+        guid: guid,
       };
     },
     send(type, data) {
       Socket.send({
         data,
-        type
+        type,
       });
     },
     // 获取聊天列表
     getChatList() {
-
       serviceList({
         limit: this.limit,
         user_id: this.userActive.to_user_id,
         upperId: this.upperId,
-        is_tourist: this.tourist
-      }).then(res => {
-        res.data.forEach(el => {
-          if(el.msn_type == 1) {
-            el.msn = this.replace_em(el.msn)
-          } else if(el.msn_type == 2) {
-            el.msn = this.replace_em(`[${el.msn}]`)
+        is_tourist: this.tourist,
+      }).then((res) => {
+        res.data.forEach((el) => {
+          if (el.msn_type == 1) {
+            el.msn = this.replace_em(el.msn);
+          } else if (el.msn_type == 2) {
+            el.msn = this.replace_em(`[${el.msn}]`);
           }
-        })
-        let selector = ''
-        if(this.upperId == 0) {
-          selector = '';
-
+        });
+        let selector = "";
+        if (this.upperId == 0) {
+          selector = "";
         } else {
           selector = `chat_${this.chatList[0].id}`;
         }
 
         // this.chatList = res.data.concat(this.chatList)
         this.chatList = [...res.data, ...this.chatList];
-        this.upperId = res.data.length > 0 ? res.data[0].id : 0
-        this.isLoad = false
+        this.upperId = res.data.length > 0 ? res.data[0].id : 0;
+        this.isLoad = false;
         this.$nextTick(() => {
           // this.scrollToTop()
-          this.isScroll = res.data.length >= this.limit
-          this.setPageScrollTo(selector)
-        })
-      })
+          this.isScroll = res.data.length >= this.limit;
+          this.setPageScrollTo(selector);
+        });
+      });
     },
     // 设置页面滚动位置
     setPageScrollTo(selector) {
       this.$nextTick(() => {
-        if(selector) {
+        if (selector) {
           setTimeout(() => {
-            let num = parseFloat(document.getElementById(selector).offsetTop) - 60
-            this.scrollTop = num
-          }, 0)
+            let num = parseFloat(document.getElementById(selector).offsetTop) - 60;
+            this.scrollTop = num;
+          }, 0);
         } else {
           var container = document.querySelector("#chat_scroll");
-          this.scrollTop = container.offsetHeight + 0.01
-          setTimeout(res => {
-            if(this.scrollTop != this.$refs.scrollBox.offsetHeight) {
-              this.scrollTop = document.querySelector("#chat_scroll").offsetHeight
+          this.scrollTop = container.offsetHeight + 0.01;
+          setTimeout((res) => {
+            if (this.scrollTop != this.$refs.scrollBox.offsetHeight) {
+              this.scrollTop = document.querySelector("#chat_scroll").offsetHeight;
             }
-          }, 300)
+          }, 300);
         }
-      })
-
+      });
     },
     //滚动到顶部
     scrollHandler() {
-      let self = this
-      if(this.isScroll && this.upperId) {
-        this.isLoad = true
-        this.getChatList()
+      let self = this;
+      if (this.isScroll && this.upperId) {
+        this.isLoad = true;
+        this.getChatList();
       }
     },
     // 滚动条动画
     scrollToTop(duration) {
       var container = document.querySelector("#chat_scroll");
-      this.scrollTop = container.offsetHeight - this.oldHeight
-      setTimeout(res => {
-        console.log(this.$refs.scrollBox.offsetHeight)
-        this.scrollTop = this.$refs.scrollBox.offsetHeight - this.oldHeight
-      }, 300)
-
+      this.scrollTop = container.offsetHeight - this.oldHeight;
+      setTimeout((res) => {
+        console.log(this.$refs.scrollBox.offsetHeight);
+        this.scrollTop = this.$refs.scrollBox.offsetHeight - this.oldHeight;
+      }, 300);
     },
     // 商品推送
     bindPush(data) {
-      this.sendMsg(data, 5)
+      this.sendMsg(data, 5);
     },
     // 商品详情
     lookGoods(item) {
-      this.goodsId = item.msn
-      this.isProductBox = true
+      this.goodsId = item.msn;
+      this.isProductBox = true;
     },
     // 搜索用户
     bindSearch(data) {
-      this.searchData = data
-      this.oldHeight = 0
-      this.upperId = 0
-      this.isScroll = false
-
+      this.searchData = data;
+      this.oldHeight = 0;
+      this.upperId = 0;
+      this.isScroll = false;
     },
     // 客服转接
     transferPeople(data) {
-      this.transferId = data.id
-      this.isTransfer = false
-      this.$Message.success('转接成功')
-      Socket.then(ws => {
+      this.transferId = data.id;
+      this.isTransfer = false;
+      this.$Message.success("转接成功");
+      Socket.then((ws) => {
         ws.send({
-          type: 'to_chat',
-          data: { id: data.uid }
-        })
-      })
+          type: "to_chat",
+          data: { id: data.uid },
+        });
+      });
     },
     // 客服转接确定
-    transferOk() {
-
-    },
+    transferOk() {},
 
     tolink() {
-      window.open('https://chat.13aq.com');
-    }
-
-
-  }
-}
+      window.open("https://chat.13aq.com");
+    },
+  },
+};
 </script>
 
 <style lang="stylus" scoped>

@@ -1,19 +1,44 @@
+<!-- @format -->
+
 <template>
   <div class="page-account">
-    <div class="container" :class="[fullWidth > 768 ? 'containerSamll' : 'containerBig']">
-      <swiper :options="swiperOption" class="swiperPross" v-if="fullWidth > 768">
-        <swiper-slide class="swiperPic" v-for="(item, index) in swiperList" :key="index">
+    <div
+      class="container"
+      :class="[fullWidth > 768 ? 'containerSamll' : 'containerBig']"
+    >
+      <swiper
+        :options="swiperOption"
+        class="swiperPross"
+        v-if="fullWidth > 768"
+      >
+        <swiper-slide
+          class="swiperPic"
+          v-for="(item, index) in swiperList"
+          :key="index"
+        >
           <img :src="item.slide" />
         </swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
+        <div
+          class="swiper-pagination"
+          slot="pagination"
+        ></div>
       </swiper>
       <div class="index_from page-account-container from-wh">
         <div class="page-account-top">
           <div class="page-account-top-logo">
-            <img :src="login_logo" alt="logo" style="width: 100%; height: 74px" />
+            <img
+              :src="login_logo"
+              alt="logo"
+              style="width: 100%; height: 74px"
+            />
           </div>
         </div>
-        <Form ref="formInline" :model="formInline" :rules="ruleInline" @keyup.enter="handleSubmit('formInline')">
+        <Form
+          ref="formInline"
+          :model="formInline"
+          :rules="ruleInline"
+          @keyup.enter="handleSubmit('formInline')"
+        >
           <FormItem prop="username">
             <Input
               type="text"
@@ -41,18 +66,28 @@
                 placeholder="请输入验证码"
                 size="large"
               />
-              <img :src="imgcode" class="pictrue" @click="captchas" />
+              <img
+                :src="imgcode"
+                class="pictrue"
+                @click="captchas"
+              />
             </div>
           </FormItem>
           <FormItem>
-            <Button type="primary" long :loading="loading" size="large" @click="handleSubmit('formInline')" class="btn"
+            <Button
+              type="primary"
+              long
+              :loading="loading"
+              size="large"
+              @click="handleSubmit('formInline')"
+              class="btn"
               >登录</Button
             >
           </FormItem>
         </Form>
       </div>
     </div>
-    
+
     <!-- <Modal
       v-model="modals"
       scrollable
@@ -68,21 +103,21 @@
         <div id="msg"></div>
       </div>
     </Modal> -->
-      <Verify
-        @success="success"
-        captchaType="blockPuzzle"
-        :imgSize="{ width: '330px', height: '155px' }"
+    <Verify
+      @success="success"
+      captchaType="blockPuzzle"
+      :imgSize="{ width: '330px', height: '155px' }"
       ref="verify"
     ></Verify>
   </div>
 </template>
 <script>
-import { AccountLogin, loginInfoApi, captcha_pro } from '@/api/account';
-import { getWorkermanUrl } from '@/api/kefu';
+import { AccountLogin, loginInfoApi, captcha_pro } from "@/api/account";
+import { getWorkermanUrl } from "@/api/kefu";
 // import mixins from '../mixins'
-import Setting from '@/setting';
-import { setCookies } from '@/libs/util';
-import '../../../assets/js/canvas-nest.min';
+import Setting from "@/setting";
+import { setCookies } from "@/libs/util";
+import "../../../assets/js/canvas-nest.min";
 // import '../../../assets/js/jigsaw.js';
 import Verify from "@/components/verifition/Verify";
 export default {
@@ -94,43 +129,43 @@ export default {
     return {
       fullWidth: document.documentElement.clientWidth,
       swiperOption: {
-        pagination: '.swiper-pagination',
+        pagination: ".swiper-pagination",
         autoplay: true,
       },
       loading: false,
       isShow: false,
       autoLogin: true,
-      imgcode: '',
+      imgcode: "",
       formInline: {
-        username: '',
-        password: '',
-        code: '',
+        username: "",
+        password: "",
+        code: "",
       },
       ruleInline: {
-        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+        username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
       },
       errorNum: 0,
       // jigsaw: null,
-      login_logo: '',
+      login_logo: "",
       swiperList: [],
-      defaultSwiperList: require('@/assets/images/sw.jpg'),
-      key: '',
+      defaultSwiperList: require("@/assets/images/swiper.jpg"),
+      key: "",
     };
   },
   created() {
     var _this = this;
     top != window && (top.location.href = location.href);
     document.onkeydown = function (e) {
-      if (_this.$route.name === 'login') {
+      if (_this.$route.name === "login") {
         let key = window.event.keyCode;
         if (key === 13) {
-          _this.handleSubmit('formInline');
+          _this.handleSubmit("formInline");
         }
       }
     };
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener("resize", this.handleResize);
   },
   watch: {
     fullWidth(val) {
@@ -164,9 +199,9 @@ export default {
       //   onRefresh() {},
       // });
       if (this.screenWidth < 768) {
-        document.getElementsByTagName('canvas')[0].removeAttribute('class', 'index_bg');
+        document.getElementsByTagName("canvas")[0].removeAttribute("class", "index_bg");
       } else {
-        document.getElementsByTagName('canvas')[0].className = 'index_bg';
+        document.getElementsByTagName("canvas")[0].className = "index_bg";
       }
       this.swiperData();
     });
@@ -176,26 +211,26 @@ export default {
     swiperData() {
       loginInfoApi()
         .then((res) => {
-          localStorage.setItem('ADMIN_TITLE', res.data.site_name);
+          localStorage.setItem("ADMIN_TITLE", res.data.site_name);
           let data = res.data || {};
-          this.login_logo = data.login_logo ? data.login_logo : require('@/assets/images/logo.png');
+          this.login_logo = data.login_logo ? data.login_logo : require("@/assets/images/logo.png");
           this.swiperList = data.slide.length ? data.slide : [{ slide: this.defaultSwiperList }];
           this.key = data.key;
         })
         .catch((err) => {
           this.$Message.error(err);
-          this.login_logo = require('@/assets/images/logo.png');
+          this.login_logo = require("@/assets/images/logo.png");
           this.swiperList = [{ slide: this.defaultSwiperList }];
         });
     },
-    success(params){ 
+    success(params) {
       this.closeModel(params);
     },
     // 关闭模态框
     closeModel(params) {
       this.isShow = false;
       let msg = this.$Message.loading({
-        content: '登录中...',
+        content: "登录中...",
         duration: 0,
       });
       this.loading = true;
@@ -203,45 +238,44 @@ export default {
         account: this.formInline.username,
         pwd: this.formInline.password,
         imgcode: this.formInline.code,
-        captchaType: 'blockPuzzle',
+        captchaType: "blockPuzzle",
         captchaVerification: params.captchaVerification,
-
       })
         .then(async (res) => {
           msg();
           let data = res.data;
           let expires = this.getExpiresTime(data.expires_time);
           // 记录用户登陆信息
-          setCookies('uuid', data.user_info.id, expires);
-          setCookies('token', data.token, expires);
-          setCookies('expires_time', data.expires_time, expires);
+          setCookies("uuid", data.user_info.id, expires);
+          setCookies("token", data.token, expires);
+          setCookies("expires_time", data.expires_time, expires);
 
-          this.$store.commit('userInfo/uniqueAuth', data.unique_auth);
-          this.$store.commit('userInfo/userInfo', data.user_info);
+          this.$store.commit("userInfo/uniqueAuth", data.unique_auth);
+          this.$store.commit("userInfo/userInfo", data.user_info);
           // 保存菜单信息
-          this.$store.commit('menus/setopenMenus', []);
-          this.$store.commit('menus/getmenusNav', data.menus);
+          this.$store.commit("menus/setopenMenus", []);
+          this.$store.commit("menus/getmenusNav", data.menus);
 
           // 记录用户信息
-          this.$store.commit('userInfo/name', data.user_info.account);
-          this.$store.commit('userInfo/avatar', data.user_info.head_pic);
-          this.$store.commit('userInfo/access', data.unique_auth);
-          this.$store.commit('userInfo/logo', data.logo);
-          this.$store.commit('userInfo/logoSmall', data.logo_square);
-          this.$store.commit('userInfo/version', data.version);
-          this.$store.commit('userInfo/newOrderAudioLink', data.newOrderAudioLink);
+          this.$store.commit("userInfo/name", data.user_info.account);
+          this.$store.commit("userInfo/avatar", data.user_info.head_pic);
+          this.$store.commit("userInfo/access", data.unique_auth);
+          this.$store.commit("userInfo/logo", data.logo);
+          this.$store.commit("userInfo/logoSmall", data.logo_square);
+          this.$store.commit("userInfo/version", data.version);
+          this.$store.commit("userInfo/newOrderAudioLink", data.newOrderAudioLink);
 
           // if (this.jigsaw) this.jigsaw.reset();
 
-          return this.$router.replace({ path: '/admin/home/' || '/admin/' });
+          return this.$router.replace({ path: "/admin/home/" || "/admin/" });
         })
         .catch((res) => {
           msg();
-          this.formInline.code = '';
+          this.formInline.code = "";
           let data = res === undefined ? {} : res;
           this.errorNum++;
           this.captchas();
-          this.$Message.error(data.msg || '登录失败');
+          this.$Message.error(data.msg || "登录失败");
           // if (this.jigsaw) this.jigsaw.reset();
         });
       setTimeout((e) => {
@@ -255,29 +289,29 @@ export default {
     },
     closefail() {
       // if (this.jigsaw) this.jigsaw.reset();
-      this.$Message.error('校验错误');
+      this.$Message.error("校验错误");
     },
     handleResize(event) {
       this.fullWidth = document.documentElement.clientWidth;
       if (this.fullWidth < 768) {
-        document.getElementsByTagName('canvas')[0].removeAttribute('class', 'index_bg');
+        document.getElementsByTagName("canvas")[0].removeAttribute("class", "index_bg");
       } else {
-        document.getElementsByTagName('canvas')[0].className = 'index_bg';
+        document.getElementsByTagName("canvas")[0].className = "index_bg";
       }
     },
     captchas: function () {
-      captcha_pro().then(res => {
-        if(res.status == 200) {
+      captcha_pro().then((res) => {
+        if (res.status == 200) {
           this.imgcode = res.data.img;
           this.formInline.key = res.data.key;
         }
-      })
+      });
       // this.imgcode = Setting.apiBaseURL + '/captcha_pro?' + Date.parse(new Date());
     },
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$refs.verify.show()
+          this.$refs.verify.show();
 
           // if (this.errorNum >= 2) {
           //   this.isShow = true;
@@ -290,14 +324,14 @@ export default {
   },
   beforeCreate() {
     if (this.fullWidth < 768) {
-      document.getElementsByTagName('canvas')[0].removeAttribute('class', 'index_bg');
+      document.getElementsByTagName("canvas")[0].removeAttribute("class", "index_bg");
     } else {
-      document.getElementsByTagName('canvas')[0].className = 'index_bg';
+      document.getElementsByTagName("canvas")[0].className = "index_bg";
     }
   },
   beforeDestroy: function () {
-    window.removeEventListener('resize', this.handleResize);
-    document.getElementsByTagName('canvas')[0].removeAttribute('class', 'index_bg');
+    window.removeEventListener("resize", this.handleResize);
+    document.getElementsByTagName("canvas")[0].removeAttribute("class", "index_bg");
   },
 };
 </script>

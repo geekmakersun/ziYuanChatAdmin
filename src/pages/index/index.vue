@@ -1,5 +1,7 @@
+<!-- @format -->
+
 <template>
-  <div style="margin-top: 20px;">
+  <div style="margin-top: 20px">
     <!--统计-->
     <statistics></statistics>
     <!--统计图标-->
@@ -8,32 +10,28 @@
 </template>
 
 <script>
-import statistics from './components/statistics'
-import statisticsCharts from "./components/statisticsCharts"
-import hotSearch from './hot-search'
-import userPreference from './user-preference'
-import { getCookies, setCookies } from '@/libs/util'
+import statistics from "./components/statistics";
+import statisticsCharts from "./components/statisticsCharts";
+import hotSearch from "./hot-search";
+import userPreference from "./user-preference";
+import { getCookies, setCookies } from "@/libs/util";
 export default {
-  name: 'index',
+  name: "index",
   components: {
     statistics,
     statisticsCharts,
     hotSearch,
-    userPreference
+    userPreference,
   },
   data() {
     return {
-      visitType: 'day', // day, month, year
-      visitDate: [(new Date()), (new Date())]
-    }
+      visitType: "day", // day, month, year
+      visitDate: [new Date(), new Date()],
+    };
   },
-  mounted() {
-
-  },
-  methods: {
-
-  }
-}
+  mounted() {},
+  methods: {},
+};
 </script>
 
 <style lang="less">
