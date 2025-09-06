@@ -350,7 +350,7 @@ export default {
 .page-account {
   display: flex;
   width: 100%;
-  background-image: url('~@/assets/images/kfbg.jpg');
+  background-image: url('~@/assets/images/kefu-bg.jpg');
   background-size: cover;
   background-position: center;
   flex-direction: column;
