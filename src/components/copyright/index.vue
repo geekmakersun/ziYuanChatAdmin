@@ -9,6 +9,8 @@
   </div>
 </template>
 <script>
+import Setting from "@/setting";
+
 export default {
   name: "i-copyright",
   data() {
@@ -30,7 +32,7 @@ export default {
           href: "https://help.crmeb.net",
         },
       ],
-      copyright: "Copyright © 2025 子源客服系统",
+      copyright: "Copyright © 2025 子源",
     };
   },
   mounted() {
@@ -38,8 +40,8 @@ export default {
   },
   methods: {
     getVersion() {
-      let version = this.$store.state.userInfo.version;
-      this.copyright += version ? "  |  " + version : "";
+      // 使用setting.js中的appName和version
+      this.copyright += "  |  " + Setting.appName + " " + Setting.version;
     },
   },
 };

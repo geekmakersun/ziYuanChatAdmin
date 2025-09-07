@@ -1,44 +1,75 @@
-const path = require('path')
+/** @format */
 
-const resolve = dir => {
-    return path.join(__dirname, dir)
-}
+const path = require("path");
 
-// 项目部署基础
-// 默认情况下，我们假设你的应用将被部署在域的根目录下,
-// 例如：https://www.my-app.com/
-// 默认：'/'
-// 如果您的应用程序部署在子路径中，则需要在这指定子路径
-// 例如：https://www.foobar.com/my-app/
-// 需要将它改为'/my-app/'
-// iview-admin线上演示打包路径： https://file.iviewui.com/admin-dist/
-const BASE_URL = process.env.NODE_ENV === 'production'
-    ? '/'
-    : '/'
-const env = process.env.NODE_ENV
+const resolve = (dir) => {
+  return path.join(__dirname, dir);
+};
+
+// 环境变量
+const env = process.env.NODE_ENV;
+const isProduction = env === "production";
+
 module.exports = {
-    // Project deployment base
-    // By default we assume your app will be deployed at the root of a domain,
-    // e.g. https://www.my-app.com/
-    // If your app is deployed at a sub-path, you will need to specify that
-    // sub-path here. For example, if your app is deployed at
-    // https://www.foobar.com/my-app/
-    // then change this to '/my-app/'
-    baseUrl: BASE_URL,
-    // tweak internal webpack configuration.
-    // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-    // 如果你不需要使用eslint，把lintOnSave设为false即可
-    lintOnSave: false,
-    chainWebpack: config => {
-        config.resolve.alias
-            .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
-            .set('_c', resolve('src/components'))
+  // 项目部署基础路径
+  // 在新版本Vue CLI中，publicPath替代了baseUrl
+  publicPath: "/admin/",
+
+  // 是否在开发环境下通过 eslint-loader 在每次保存时 lint 代码
+  lintOnSave: false,
+
+  // 是否为生产环境构建生成 source map
+  // 设置为false可以加速生产环境构建并保护源代码
+  productionSourceMap: false,
+
+  // webpack配置
+  chainWebpack: (config) => {
+    // 设置路径别名
+    config.resolve.alias.set("@", resolve("src")).set("_c", resolve("src/components"));
+  },
+
+  // webpack配置
+  configureWebpack: {
+    // 开发环境优化
+    devtool: isProduction ? false : "source-map",
+
+    // 性能优化
+    performance: {
+      hints: isProduction ? "warning" : false,
     },
-    // 设为false打包时不生成.map文件
-    productionSourceMap: false,
-    // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
-    // devServer: {
-    //   proxy: 'localhost:3000'
+  },
+
+  // 开发服务器配置
+  devServer: {
+    // 端口号
+    port: 8080,
+
+    // 自动打开浏览器
+    open: true,
+
+    // 代理配置（解决跨域）
+    // proxy: {
+    //   '/api': {
+    //     target: 'http://localhost:3000',
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       '^/api': ''
+    //     }
+    //   }
     // }
-    publicPath: env === 'development' ? '/admin/' : '/admin/'
-}
+  },
+
+  // CSS相关配置
+  css: {
+    // 是否使用css分离插件 ExtractTextPlugin
+    extract: isProduction,
+
+    // 开启 CSS source maps
+    sourceMap: false,
+
+    // css预设器配置项
+    loaderOptions: {
+      // 可以在此处配置各种css预处理器的选项
+    }
+  },
+};
