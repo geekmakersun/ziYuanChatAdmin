@@ -38,7 +38,7 @@
         </div>
         <p class="typetitle">第二步，设置参数并初始化</p>
         <div  class="fenlei">
-            <p class="font-w">在所需使用crmChat服务的文件中，实例化 initCustomerServer 对象, 调用对象的 init 方法，开始加载crmChat服务</p>
+            <p class="font-w">在所需使用子源客服系统服务的文件中，实例化 initCustomerServer 对象, 调用对象的 init 方法，开始加载子源客服系统服务</p>
             <div class="code-content-wrap">
                 <textarea id="NormalCodeTextareakaifa2" class="code" rows="45">
 var option = {

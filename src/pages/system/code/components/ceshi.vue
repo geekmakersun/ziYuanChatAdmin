@@ -30,7 +30,7 @@
             <div class="other-wrap">
                 <a @click="getCopy('NormalCodeTextarea')" class="btn btn-blue btn-large" href="javascript:void(0);"><span>复制代码</span></a>
             </div>
-            <p class="text-i">引入方式二：您可以直接在需要引入crmChat服务的页面，即html文件直接使用标签引入的方式;</p>
+            <p class="text-i">引入方式二：您可以直接在需要引入子源客服系统服务的页面，即html文件直接使用标签引入的方式;</p>
             <p class="text-i" style="color: #ff0000">请注意: {{srcUrl}} 文件的地址为当前管理系统所在的地址，若引入报错，请核实引入的文件地址是否正确</p>
             <div class="code-content-wrap">
         <textarea id="NormalCodeTextarea1" class="code textarea" rows="2">
@@ -42,14 +42,14 @@
                 <a @click="getCopy('NormalCodeTextarea1')" class="btn btn-blue btn-large" href="javascript:void(0);"><span>复制代码</span></a>
             </div>
 
-            <p class="font-w">第二步：在所需使用crmChat服务的文件中，实例化 initCustomerServer 对象, 调用对象的 init 方法，开始加载crmChat服务</p>
+            <p class="font-w">第二步：在所需使用子源客服系统服务的文件中，实例化 initCustomerServer 对象, 调用对象的 init 方法，开始加载子源客服系统服务</p>
             <p class="text-i">实例化对象(initCustomerServer)，并传入所需参数，基础调用示例如下，基础示例的聊天模式为游客模式。</p>
             <div class="code-content-wrap">
         <textarea id="NormalCodeTextarea2" class="code textarea" rows="15">
           <script>
             this.canCustomerServer = new initCustomerServer({
                 openUrl: location.origin, // 打开客服聊天框的地址，即：部署后台管理系统的地址，若未填写，则自动获取当前服务器的地址
-                type: '', //默认为空， 非必填项, 系统会自动判断启用crmChat服务的端，从而展示不同的视图，如需指定，则修改此处参数即可，即：移动端填写 "Mobile"，pc端填写 "pc"即可
+                type: '', //默认为空， 非必填项, 系统会自动判断启用子源客服系统服务的端，从而展示不同的视图，如需指定，则修改此处参数即可，即：移动端填写 "Mobile"，pc端填写 "pc"即可
                 insertDomNode: '.getCode_container', // SPA应用必填，html文件单独引入选填，表示插入客服弹窗的 dom节点，一般为当前界面的根节点，默认为body
                 token: {{token.token}}, // token,与后台交互的凭证
             isShowTip: true, // 初始化成功后，界面右下角会自动创建 “联系客服按钮”， 如无需默认展示，则填写false即可
@@ -360,14 +360,14 @@
                         type: 'String',
                         isRequired: 'false',
                         example: 'pc',
-                        message: '指定引入crmChat服务的端，若不传，customerServer.js 将自行判断当前所在环境'
+                        message: '指定引入子源客服系统服务的端，若不传，customerServer.js 将自行判断当前所在环境'
                     },
                     {
                         name: 'isShowTip',
                         type: 'String',
                         isRequired: 'false',
                         example: 'true | fasle',
-                        message: '默认为true，若传入false，则crmChat服务预设的联系客服按钮被隐藏'
+                        message: '默认为true，若传入false，则子源客服系统服务预设的联系客服按钮被隐藏'
                     }
                 ],
                 data2: [
